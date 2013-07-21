@@ -1,11 +1,14 @@
 package com.example.manada4;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Prueba Service modificacion de el de  prueba test
  */
 
+import android.R.string;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -125,7 +128,9 @@ public class PruebaService extends Service {
 	
 	private void startLoggingService() {
 		mLocationManager=(LocationManager)MainActivity.context.getSystemService(Context.LOCATION_SERVICE);
-		
+		Calendar calendar=Calendar.getInstance();
+		final String hora=String.valueOf(calendar.get(Calendar.YEAR))+String.valueOf(calendar.get(Calendar.MONTH)+1)+String.valueOf(calendar.get(Calendar.DATE));
+		Log.i("Manada3","La hora exacta "+hora);
 		if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)==true){
 			
 			//skt.MostrarToast(MainActivity.context, "GPS Habilitado...");
@@ -161,15 +166,18 @@ public class PruebaService extends Service {
 					locLatitud2 = location.getLatitude();
 					locLongitud2 = location.getLongitude();
 					Log.i("Manada3", "Coordenadas:"+locLatitud2+" "+locLongitud2);
-					/*ApSocket soquet=new ApSocket();
+					ApSocket soquet=new ApSocket();
 					JsonClass jmsg=new JsonClass();
 					try {
-						String arr=soquet.execute("192.168.1.101","65455",jmsg.msg_posicion(1, locLatitud2, locLongitud2, "13-06-2013")).get();
+						String arr=soquet.execute("192.168.1.103","65455",jmsg.msg_posicion(1, locLatitud2, locLongitud2, hora)).get();
 						Log.i("Manada3","Retorno del socket :"+arr);
 						JsonToArray js=new JsonToArray();
 						String[][] guardians=new String[2][2];
+						if(arr!=null){
 						guardians=js.msg_panico_alarma(arr);						
-						
+						}else{
+							Log.i("Manada3","No hubo comunicacion del socket"+arr);
+						}
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						Log.e("Manada3","InterruptedException Return Asynctask fail :"+e);
@@ -179,7 +187,7 @@ public class PruebaService extends Service {
 						Log.e("Manada3","ExecutionException Return Asynctask fail :"+e);
 						e.printStackTrace();
 					}
-					//soquet.ans2.notify();*/
+					//soquet.ans2.notify();
 				}
 	
 	
